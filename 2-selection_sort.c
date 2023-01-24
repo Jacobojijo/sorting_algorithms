@@ -1,41 +1,31 @@
 #include "sort.h"
+
 /**
- * insertion_sort_list - function that sorts a doubly linked list
- *                       of integers in ascending order using the Insertion
- *                       sort algorithm
- * @list: doubly linked list
- * Return: void
+ * selection_sort - sort list with selection_sort
+ * @array: The array to be printed
+ * @size: Number of elements in @array
  */
-
-void insertion_sort_list(listint_t **list)
+void selection_sort(int *array, size_t size)
 {
-	listint_t *node = NULL, *tmp = NULL;
+	size_t i, c, less, tmp, swap;
 
-	if (list == NULL || *list == NULL || (*list)->next == NULL)
+	if (array == NULL)
 		return;
-
-	node = *list;
-	node = node->next;
-	while (node)
+	for (i = 0; i < size; i++)
 	{
-		while (node->prev && node->n < (node->prev)->n)
+		for (less = i, c = i; c < size; c++)
+			if (array[c] < array[less])
+			{
+				less = c;
+				swap = 1;
+			}
+		if (swap == 1)
 		{
-			tmp = node;
-			if (node->next)
-				(node->next)->prev = tmp->prev;
-			(node->prev)->next = tmp->next;
-			node = node->prev;
-			tmp->prev = node->prev;
-			tmp->next = node;
-			if (node->prev)
-				(node->prev)->next = tmp;
-			node->prev = tmp;
-			if (tmp->prev == NULL)
-				*list = tmp;
-			print_list(*list);
-			node = node->prev;
+			tmp = array[less];
+			array[less] = array[i];
+			array[i] = tmp;
+			print_array(array, size);
+			swap = 0;
 		}
-		node = node->next;
 	}
-
 }

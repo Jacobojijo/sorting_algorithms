@@ -1,58 +1,46 @@
 #include "sort.h"
 
-void swap(listint_t **head, listint_t *node1, listint_t *node2);
 /**
- * insertion_sort_list - sorts a doubly linked list with
- * the insertion sort algorithm
- *
- * @list: list to be sorted
- *
- * Return: void
+ * swap_ints - Swap two integers in an array.
+ * @a: The first integer to swap.
+ * @b: The second integer to swap.
  */
-void insertion_sort_list(listint_t **list)
+void swap_ints(int *a, int *b)
 {
-	listint_t *forw, *tmp;
+	int tmp;
 
-	if (list == NULL || *list == NULL || (*list)->next == NULL)
-		return;
-
-	for (forw = (*list)->next; forw && forw->prev; forw = forw->next)
-	{
-		for (; forw && forw->prev && forw->n < forw->prev->n;
-		     forw = forw->prev)
-		{
-			tmp = forw->prev;
-			swap(list, tmp, forw);
-			print_list(*list);
-			forw = forw->next;
-		}
-	}
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
 
 /**
- * swap - swaps two nodes
- * @head: the head node
- * @node1: The first node
- * @node2: the second node
+ * bubble_sort - Sort an array of integers in ascending order.
+ * @array: An array of integers to sort.
+ * @size: The size of the array.
  *
- * Return: void
+ * Description: Prints the array after each swap.
  */
-void swap(listint_t **head, listint_t *node1, listint_t *node2)
+void bubble_sort(int *array, size_t size)
 {
-	listint_t *prev, *next;
+	size_t i, len = size;
+	bool bubbly = false;
 
-	prev = node1->prev;
-	next = node2->next;
+	if (array == NULL || size < 2)
+		return;
 
-	if (prev != NULL)
-		prev->next = node2;
-	else
-		*head = node2;
-
-	node1->prev = node2;
-	node1->next = next;
-	node2->prev = prev;
-	node2->next = node1;
-	if (next)
-		next->prev = node1;
+	while (bubbly == false)
+	{
+		bubbly = true;
+		for (i = 0; i < len - 1; i++)
+		{
+			if (array[i] > array[i + 1])
+			{
+				swap_ints(array + i, array + i + 1);
+				print_array(array, size);
+				bubbly = false;
+			}
+		}
+		len--;
+	}
 }

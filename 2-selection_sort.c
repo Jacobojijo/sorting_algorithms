@@ -1,45 +1,41 @@
 #include "sort.h"
-
 /**
- * swap_ints - Swap two integers in an array.
- * @a: The first integer to swap.
- * @b: The second integer to swap.
+ * insertion_sort_list - function that sorts a doubly linked list
+ *                       of integers in ascending order using the Insertion
+ *                       sort algorithm
+ * @list: doubly linked list
+ * Return: void
  */
-void swap_ints(int *a, int *b)
+
+void insertion_sort_list(listint_t **list)
 {
-	int tmp;
+	listint_t *node = NULL, *tmp = NULL;
 
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
-
-/**
- * selection_sort - Sort an array of integers in ascending order
- *                  using the selection sort algorithm.
- * @array: An array of integers.
- * @size: The size of the array.
- *
- * Description: Prints the array after each swap.
- */
-void selection_sort(int *array, size_t size)
-{
-	int *min;
-	size_t i, j;
-
-	if (array == NULL || size < 2)
+	if (list == NULL || *list == NULL || (*list)->next == NULL)
 		return;
 
-	for (i = 0; i < size - 1; i++)
+	node = *list;
+	node = node->next;
+	while (node)
 	{
-		min = array + i;
-		for (j = i + 1; j < size; j++)
-			min = (array[j] < *min) ? (array + j) : min;
-
-		if ((array + i) != min)
+		while (node->prev && node->n < (node->prev)->n)
 		{
-			swap_ints(array + i, min);
-			print_array(array, size);
+			tmp = node;
+			if (node->next)
+				(node->next)->prev = tmp->prev;
+			(node->prev)->next = tmp->next;
+			node = node->prev;
+			tmp->prev = node->prev;
+			tmp->next = node;
+			if (node->prev)
+				(node->prev)->next = tmp;
+			node->prev = tmp;
+			if (tmp->prev == NULL)
+				*list = tmp;
+			print_list(*list);
+			node = node->prev;
 		}
+		node = node->next;
 	}
+
 }
